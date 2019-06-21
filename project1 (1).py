@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # coding: utf-8
-
 # In[2]:
 
 
@@ -8,31 +7,12 @@ import requests
 page = requests.get("https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0218165")
 page
 
-
-# In[4]:
-
-
-soup = BeautifulSoup(page.content, 'html.parser')
-soup.find("title")
-
-
-# In[29]:
-
-
-soup.find_all('title')
-
-
-# In[3]:
-
-
 from bs4 import BeautifulSoup
 soup = BeautifulSoup(page.content, 'html.parser')
 print(len(soup))
 print(type(soup))
 
-
-# In[7]:
-
+soup.find("title")
 
 auth=soup.find_all('a',{'class':'author-name'})
 from pandas import DataFrame
@@ -41,10 +21,6 @@ for link in auth:
     datalist.append(link.get_text())
 df=DataFrame(datalist5,columns=['authors'])
 df.to_csv("E:/DATA ANALYTICS/IMARTICUS/PGA06/project/project1/authors.csv")
-
-
-# In[ ]:
-
 
 text1=soup.find('div',{'class':'abstract toc-section'})
 text2=text1.find('p')
@@ -59,20 +35,12 @@ from pandas import DataFrame
 df = DataFrame(data, columns = ["para"])
 df.to_csv("E:/DATA ANALYTICS/IMARTICUS/PGA06/project/project1/abstract.csv")
 
-
-# In[ ]:
-
-
 soup.find("title")
 data=[]
 for link in soup.find('title'):
     data.append(link)
 df = DataFrame(data, columns = ["para"])
 df.to_csv("E:/DATA ANALYTICS/IMARTICUS/PGA06/project/project1/title.csv")
-
-
-# In[5]:
-
 
 import urllib.request as request
 folder=r"E:/DATA ANALYTICS/IMARTICUS/PGA06"+"\\"
@@ -86,15 +54,7 @@ for image in images:
     request.urlretrieve("https://journals.plos.org"+image['src'],r"E:/DATA ANALYTICS/IMARTICUS/PGA06/project/project1/images/"+'image_'+str(count)+".png")
     count = count+1
 
-
-# In[6]:
-
-
 range(len(images))
-
-
-# In[22]:
-
 
 try:
     from PIL import Image
@@ -119,15 +79,10 @@ df = DataFrame(data1, columns = ["image_text"])
 #df.to_csv("E:/DATA ANALYTICS/IMARTICUS/PGA06/project/project1/tesseract.csv")
 print(data1)
 
-
-# In[26]:
-
-
 Pubdate = soup.find_all("li", {"id": "artPubDate"})
 for link in soup.find_all("li", {"id": "artPubDate"}):
     print(link.text)
     datalist = []
-
 for link in Pubdate:
     datalist.append(link.text)
     
@@ -136,10 +91,6 @@ import pandas as pd
 from pandas import DataFrame
 df = DataFrame(datalist, columns = ["publish_date"])
 df.to_csv("E:/DATA ANALYTICS/IMARTICUS/PGA06/project/project1/pubdate.csv")
-
-
-# In[34]:
-
 
 import fitz
 doc = fitz.open("E:/DATA ANALYTICS/IMARTICUS/PGA06/project/project1/journal.pone.0218165.pdf")
